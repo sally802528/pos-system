@@ -83,7 +83,7 @@ function handleLogin() {
 
     if (username === admin.username && password === admin.password) {
         // 登入成功後切換到 POS 頁面
-        showPage('pos-page');
+        showPage('pos-page'); 
         msgEl.textContent = '';
         renderProducts(products); // 刷新 POS 商品列表
         renderCategoryFilters(products); // 刷新分類按鈕
