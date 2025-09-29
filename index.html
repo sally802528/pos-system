@@ -8,52 +8,121 @@
 </head>
 <body>
 
-    <header>
-        <h1>簡易 POS 銷售系統</h1>
-        <div id="login-status">未登入</div>
-    </header>
+    <div id="login-page" class="page active">
+        <h2>POS 系統登入</h2>
+        <div class="login-form">
+            <p>提示：預設使用者名為 **admin**，密碼為 **123456**</p>
+            <input type="text" id="username" placeholder="使用者名">
+            <input type="password" id="password" placeholder="密碼">
+            <button id="login-btn">登入</button>
+            <p id="login-message" class="error-msg"></p>
+        </div>
+        <button id="reset-admin-btn" class="secondary-btn small-btn">重置預設帳號</button>
+    </div>
 
-    <main class="pos-container">
+    <div id="pos-page" class="page">
+        <header>
+            <h1>簡易 POS 銷售系統</h1>
+            <div class="header-actions">
+                <button id="go-to-manage-btn" class="secondary-btn small-btn">管理商品</button>
+                <button id="logout-btn" class="secondary-btn small-btn">登出</button>
+            </div>
+        </header>
 
-        <section class="product-selection">
-            <h2>商品選單</h2>
-            <div class="category-filter">
-                <button class="filter-btn active" data-category="all">全部</button>
+        <main class="pos-container">
+            <section class="product-selection">
+                <h2>商品選單</h2>
+                <div class="category-filter">
+                    <button class="filter-btn active" data-category="all">全部</button>
                 </div>
-            <div id="products-list" class="products-grid">
+                <div id="products-list" class="products-grid"></div>
+            </section>
+
+            <section class="order-cart">
+                <h2>當前訂單</h2>
+                <div id="cart-items" class="cart-items-list"></div>
+                
+                <div class="calculator">
+                    <input type="text" id="calc-display" value="0" readonly>
+                    <div class="calc-grid">
+                        <button class="calc-btn op" data-val="C">C</button>
+                        <button class="calc-btn op" data-val="CE">CE</button>
+                        <button class="calc-btn op" data-val="%">%</button>
+                        <button class="calc-btn op" data-val="/">/</button>
+                        <button class="calc-btn num" data-val="7">7</button>
+                        <button class="calc-btn num" data-val="8">8</button>
+                        <button class="calc-btn num" data-val="9">9</button>
+                        <button class="calc-btn op" data-val="*">x</button>
+                        <button class="calc-btn num" data-val="4">4</button>
+                        <button class="calc-btn num" data-val="5">5</button>
+                        <button class="calc-btn num" data-val="6">6</button>
+                        <button class="calc-btn op" data-val="-">-</button>
+                        <button class="calc-btn num" data-val="1">1</button>
+                        <button class="calc-btn num" data-val="2">2</button>
+                        <button class="calc-btn num" data-val="3">3</button>
+                        <button class="calc-btn op" data-val="+">+</button>
+                        <button class="calc-btn num" data-val="0">0</button>
+                        <button class="calc-btn num" data-val=".">.</button>
+                        <button class="calc-btn op" data-val="apply" id="apply-calc-btn">應用</button>
+                        <button class="calc-btn op equal" data-val="=">=</button>
+                    </div>
                 </div>
-        </section>
 
-        <section class="order-cart">
-            <h2>當前訂單</h2>
-            <div id="cart-items">
-                <p>購物車是空的。</p>
-            </div>
-            
-            <div class="order-summary">
-                <p>小計 (Subtotal)：<span id="subtotal">$0.00</span></p>
-                <p>折扣 (Discount)：<span id="discount-amount">$0.00</span></p>
-                <h3>總計 (Total)：<span id="total">$0.00</span></h3>
-            </div>
+                <div class="order-summary">
+                    <p>應收金額：<span id="receivable">$0.00</span></p>
+                    <p>實收金額：<input type="number" id="cash-received" value="0" min="0" step="1"></p>
+                    <h3>找零金額：<span id="change-due">$0.00</span></h3>
+                </div>
 
-            <div class="checkout-actions">
-                <button id="checkout-btn" class="primary-btn">結帳 (Checkout)</button>
-                <button id="clear-cart-btn" class="secondary-btn">清空</button>
-            </div>
-        </section>
+                <div class="checkout-actions">
+                    <button id="checkout-btn" class="primary-btn">完成交易並列印</button>
+                    <button id="clear-cart-btn" class="secondary-btn">清空</button>
+                </div>
+            </section>
+        </main>
+    </div>
 
-    </main>
-    
+    <div id="manage-page" class="page">
+        <header>
+            <h1>商品管理</h1>
+            <button id="go-to-pos-btn" class="secondary-btn small-btn">返回 POS</button>
+        </header>
+
+        <main class="management-container">
+            <section class="add-product-form">
+                <h2>新增/編輯商品</h2>
+                <input type="hidden" id="manage-product-id">
+                <input type="text" id="manage-name" placeholder="名稱" required>
+                <input type="number" id="manage-price" placeholder="價格" step="0.01" min="0" required>
+                <input type="text" id="manage-category" placeholder="分類 (例如: 飲品、點心)" required>
+                <input type="number" id="manage-stock" placeholder="庫存數量" min="0">
+                <button id="save-product-btn" class="primary-btn">新增商品</button>
+            </section>
+
+            <section class="product-list-management">
+                <h2>商品清單 (點擊編輯)</h2>
+                <div id="managed-products-list"></div>
+                <div class="import-export-btns">
+                    <button id="export-products-btn" class="secondary-btn">導出商品數據 (JSON)</button>
+                    <input type="file" id="import-products-file" accept=".json" style="display: none;">
+                    <button id="import-products-btn" class="secondary-btn">導入商品數據 (JSON)</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
     <div id="receipt-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn">&times;</span>
             <h3>交易收據</h3>
             <div id="receipt-content"></div>
-            <button id="print-receipt-btn">列印收據</button>
-            <button id="export-pdf-btn">導出 PDF</button>
+            <div class="modal-actions">
+                <button id="print-receipt-btn">列印收據</button>
+                <button id="export-receipt-pdf-btn">導出 PDF</button>
+            </div>
         </div>
     </div>
-
+    
     <script src="script.js"></script>
 </body>
 </html>
