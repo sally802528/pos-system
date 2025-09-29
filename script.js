@@ -383,7 +383,7 @@ function handleCheckout() {
  */
 function displayReceipt(transaction) {
     let receiptText = '======================================\n';
-    receiptText += `      GitHub POS 簡易收據\n`;
+    receiptText += `      七美科技 POS機 收據\n`;
     receiptText += '======================================\n';
     receiptText += `交易時間: ${transaction.timestamp}\n`;
     receiptText += `收據編號: ${transaction.id}\n`;
