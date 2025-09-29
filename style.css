@@ -1,9 +1,19 @@
-/* 基本重置 */
+/* --- 基礎設定與頁面切換 --- */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+}
+
+/* 隱藏未活躍的頁面 */
+.page {
+    display: none;
+    min-height: 100vh;
+}
+
+.page.active {
+    display: block;
 }
 
 header {
@@ -15,27 +25,64 @@ header {
     align-items: center;
 }
 
-h1 {
-    margin: 0;
-    font-size: 1.5em;
+.header-actions button {
+    margin-left: 10px;
 }
 
-#login-status {
-    font-size: 0.9em;
-    padding: 5px 10px;
-    border-radius: 5px;
-    background-color: #555;
+/* --- 登入頁面樣式 --- */
+#login-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #007bff;
+    color: white;
 }
 
-/* POS 主要佈局 */
+.login-form {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    margin-bottom: 20px;
+    width: 300px;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#login-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1.1em;
+}
+
+.error-msg {
+    color: #dc3545;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* --- POS 主介面樣式 --- */
 .pos-container {
     display: flex;
     padding: 20px;
-    gap: 20px; /* 區塊間距 */
+    gap: 20px;
 }
 
 .product-selection {
-    flex: 2; /* 佔據較大空間 */
+    flex: 2;
     background-color: white;
     padding: 20px;
     border-radius: 8px;
@@ -43,16 +90,11 @@ h1 {
 }
 
 .order-cart {
-    flex: 1; /* 佔據較小空間 */
+    flex: 1;
     background-color: #e9e9e9;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-/* 商品區樣式 */
-.category-filter {
-    margin-bottom: 15px;
 }
 
 .filter-btn {
@@ -72,7 +114,7 @@ h1 {
 
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 自適應網格 */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 15px;
 }
 
@@ -82,37 +124,23 @@ h1 {
     border-radius: 6px;
     text-align: center;
     cursor: pointer;
-    transition: background-color 0.2s;
     background-color: #fff;
 }
 
-.product-card:hover {
-    background-color: #e0f7fa;
-    border-color: #00bcd4;
-}
-
-.product-card h4 {
-    margin: 5px 0;
-    font-size: 1em;
-}
-
-.product-card p {
-    margin: 0;
-    font-weight: bold;
-    color: #4CAF50;
-}
-
-/* 購物車區樣式 */
-#cart-items {
-    min-height: 200px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #ccc;
+/* 購物車樣式 */
+.cart-items-list {
+    min-height: 150px;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 10px;
     padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
 }
 
 .cart-item {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 8px 0;
     border-top: 1px dashed #ccc;
 }
@@ -151,24 +179,33 @@ h1 {
     color: #dc3545;
 }
 
+#cash-received {
+    width: 100px;
+    text-align: right;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 4px;
+}
+
 .checkout-actions {
     margin-top: 20px;
     display: flex;
     gap: 10px;
 }
 
+/* 按鈕通用樣式 */
 .primary-btn, .secondary-btn {
     padding: 10px 15px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-weight: bold;
-    flex: 1;
 }
 
 .primary-btn {
     background-color: #28a745;
     color: white;
+    flex: 1;
 }
 
 .secondary-btn {
@@ -176,34 +213,119 @@ h1 {
     color: white;
 }
 
-/* 模態視窗樣式 (簡化) */
+.small-btn {
+    padding: 5px 10px;
+    font-weight: normal;
+}
+
+/* --- 計算機樣式 --- */
+.calculator {
+    margin-bottom: 20px;
+    background: #fff;
+    padding: 10px;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#calc-display {
+    width: 100%;
+    padding: 10px;
+    font-size: 1.5em;
+    text-align: right;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.calc-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+}
+
+.calc-btn {
+    padding: 15px 0;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.1s;
+}
+
+.calc-btn.num { background-color: #f0f0f0; }
+.calc-btn.op { background-color: #ff9800; color: white; }
+.calc-btn.equal { background-color: #4CAF50; color: white; }
+
+/* --- 管理頁面樣式 --- */
+.management-container {
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+}
+
+.add-product-form, .product-list-management {
+    flex: 1;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.add-product-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.manage-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px dashed #ccc;
+    cursor: pointer;
+}
+
+.manage-item-actions button {
+    margin-left: 5px;
+    padding: 5px 10px;
+}
+
+.import-export-btns {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+/* --- 模態視窗 (收據) --- */
 .modal {
-    display: none; /* 預設隱藏 */
+    display: none; 
     position: fixed;
-    z-index: 1;
+    z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0,0,0,0.6);
 }
 
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto;
+    margin: 10% auto;
     padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
     border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
     position: relative;
 }
 
-.close-btn {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
+#receipt-content {
+    font-family: monospace;
+    white-space: pre-wrap;
+    border: 1px dashed #333;
+    padding: 10px;
+    margin-bottom: 15px;
 }
