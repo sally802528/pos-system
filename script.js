@@ -31,20 +31,20 @@ const managePage = $('manage-page');
 // --- 輔助函式 ---
 
 /**
- * 頁面切換函式
+ * 頁面切換函式 (解決頁面重疊問題的關鍵)
  * @param {string} pageId - 要顯示的頁面 ID (login-page, pos-page, manage-page)
  */
 function showPage(pageId) {
-    loginPage.classList.remove('active');
-    posPage.classList.remove('active');
-    managePage.classList.remove('active');
+    $('login-page').classList.remove('active');
+    $('pos-page').classList.remove('active');
+    $('manage-page').classList.remove('active');
+    
+    // 確保只顯示目標頁面
     $(pageId).classList.add('active');
 }
 
 /**
  * 從 localStorage 載入數據
- * @param {string} key - 儲存的鍵
- * @param {any} defaultValue - 預設值
  */
 function loadData(key, defaultValue) {
     const data = localStorage.getItem(key);
@@ -53,8 +53,6 @@ function loadData(key, defaultValue) {
 
 /**
  * 儲存數據到 localStorage
- * @param {string} key - 儲存的鍵
- * @param {any} data - 要儲存的數據
  */
 function saveData(key, data) {
     localStorage.setItem(key, JSON.stringify(data));
@@ -68,7 +66,6 @@ function saveData(key, data) {
 function initAdmin() {
     const admin = loadData(ADMIN_KEY, null);
     if (!admin) {
-        // 設定預設密碼
         saveData(ADMIN_KEY, { username: 'admin', password: '123456' }); 
     }
 }
@@ -88,7 +85,8 @@ function handleLogin() {
         // 登入成功後切換到 POS 頁面
         showPage('pos-page');
         msgEl.textContent = '';
-        console.log('登入成功');
+        renderProducts(products); // 刷新 POS 商品列表
+        renderCategoryFilters(products); // 刷新分類按鈕
     } else {
         msgEl.textContent = '使用者名或密碼錯誤！';
     }
@@ -114,7 +112,7 @@ function resetAdmin() {
 }
 
 
-// --- 2. 商品數據與渲染邏輯 (POS & 管理) ---
+// --- 2. 商品數據與渲染邏輯 ---
 
 /**
  * 初始化或載入商品數據
@@ -150,7 +148,6 @@ function renderProducts(productArray) {
             <p>$${product.price.toFixed(2)}</p>
             <small>${stockInfo}</small>
         `;
-        // 999 視為無限庫存，允許點擊
         if (product.stock > 0 || product.stock === 999) { 
             card.addEventListener('click', () => addToCart(product.id));
         } else {
@@ -170,7 +167,6 @@ function renderCategoryFilters(productArray) {
 
     filterContainer.innerHTML = '';
     
-    // 生成所有分類按鈕
     categories.forEach(category => {
         const btn = document.createElement('button');
         btn.className = `filter-btn ${category === 'all' ? 'active' : ''}`;
@@ -178,7 +174,6 @@ function renderCategoryFilters(productArray) {
         btn.dataset.category = category;
         
         btn.addEventListener('click', (e) => {
-            // 處理樣式切換
             $qa('.category-filter .filter-btn').forEach(b => b.classList.remove('active'));
             e.target.classList.add('active');
             
@@ -244,7 +239,7 @@ function updateCartQuantity(productId, type) {
         } else if (type === 'decrease') {
             cart[itemIndex].quantity--;
             if (cart[itemIndex].quantity <= 0) {
-                cart.splice(itemIndex, 1); // 移除商品
+                cart.splice(itemIndex, 1); 
             }
         }
     }
@@ -290,7 +285,7 @@ function renderCart() {
     const total = subtotal; 
     receivableEl.textContent = `$${total.toFixed(2)}`;
     
-    // 綁定購物車按鈕事件 (需要在渲染後綁定)
+    // 綁定購物車按鈕事件
     cartItemsEl.querySelectorAll('.qty-btn').forEach(btn => {
         const productId = parseInt(btn.dataset.id);
         const type = btn.dataset.type;
@@ -384,16 +379,6 @@ function handleCheckout() {
 }
 
 /**
- * 清空購物車
- */
-function clearCart() {
-    if (confirm('確定要清空購物車嗎？')) {
-        cart = [];
-        renderCart();
-    }
-}
-
-/**
  * 生成並顯示收據內容
  */
 function displayReceipt(transaction) {
@@ -431,11 +416,11 @@ function handleCalculator(value) {
     const displayEl = $('calc-display');
     let displayValue = displayEl.value;
 
-    if (value === 'C') { // 清空所有
+    if (value === 'C') { 
         calculatorValue = '0';
         calculatorPendingOp = null;
         calculatorWaitingForSecondOperand = false;
-    } else if (value === 'CE') { // 清空當前輸入
+    } else if (value === 'CE') { 
         calculatorValue = '0';
     } else if (value === '=') {
         if (calculatorPendingOp) {
@@ -453,10 +438,8 @@ function handleCalculator(value) {
     } else if (value === '%') {
         calculatorValue = String(parseFloat(displayValue) / 100);
     } else if (value === 'apply') {
-        // 將計算機結果應用到實收金額
         let num = parseFloat(displayValue);
         if (!isNaN(num)) {
-            // 將計算結果寫入實收金額輸入框並觸發找零計算
             cashReceivedInput.value = num.toFixed(2); 
             calculateChange();
         }
@@ -468,7 +451,6 @@ function handleCalculator(value) {
             if (displayValue === '0' && value !== '.') {
                 displayValue = value;
             } else if (value === '.' && displayValue.includes('.')) {
-                // 不做任何事
             } else {
                 displayValue += value;
             }
@@ -476,7 +458,6 @@ function handleCalculator(value) {
         calculatorValue = displayValue;
     }
 
-    // 更新顯示
     displayEl.value = calculatorValue.slice(0, 15); 
 }
 
@@ -509,7 +490,7 @@ function renderManagementList() {
         itemEl.innerHTML = `
             <span>${product.name} (ID: ${product.id})</span>
             <div class="manage-item-actions">
-                <small>分類: ${product.category} | 價格: $${product.price} | 庫存: ${product.stock}</small>
+                <small>分類: ${product.category} | 價格: $${product.price.toFixed(2)} | 庫存: ${product.stock}</small>
                 <button class="secondary-btn small-btn edit-btn" data-id="${product.id}">編輯</button>
                 <button class="qty-btn remove small-btn delete-btn" data-id="${product.id}">刪除</button>
             </div>
@@ -550,7 +531,6 @@ function handleSaveProduct() {
     renderManagementList();
     resetProductForm();
     
-    // 重新載入 POS 數據
     renderCategoryFilters(products);
     renderProducts(products);
 }
@@ -590,7 +570,7 @@ function handleDeleteProduct(event) {
 /**
  * 清空商品表單
  */
-function resetProductForm() {
+window.resetProductForm = function() { // 設為全域函式供 HTML 調用
     $('manage-product-id').value = '';
     $('manage-name').value = '';
     $('manage-price').value = '';
@@ -599,7 +579,7 @@ function resetProductForm() {
     $('save-product-btn').textContent = '新增商品';
 }
 
-// --- 6. 導入/導出功能 (已簡化) ---
+// --- 6. 導入/導出與列印功能 ---
 
 function handleExportProducts() {
     const dataStr = JSON.stringify(products, null, 2);
@@ -646,8 +626,7 @@ function handleImportProducts(event) {
 }
 
 function handlePrintReceipt() {
-    // 為了實現列印，這裡需要臨時操作 DOM
-    receiptModal.style.display = 'none'; // 隱藏模態框本身
+    receiptModal.style.display = 'none'; 
     const receiptWindow = window.open('', '', 'width=400,height=600');
     receiptWindow.document.write('<html><head><title>POS 收據</title>');
     receiptWindow.document.write('<style>body { font-family: monospace; white-space: pre; font-size: 12px; margin: 10px; }</style>');
@@ -656,11 +635,11 @@ function handlePrintReceipt() {
     receiptWindow.document.write('</body></html>');
     receiptWindow.document.close();
     receiptWindow.print();
-    receiptModal.style.display = 'block'; // 重新顯示模態框
+    receiptModal.style.display = 'block'; 
 }
 
 function handleExportPDF() {
-    alert('PDF 導出功能需要引入 jspdf 或 html2canvas 庫。');
+    alert('PDF 導出功能需要引入 jspdf 或 html2canvas 庫，請自行加入程式碼。');
 }
 
 
@@ -685,7 +664,6 @@ function initPOS() {
     // 登入頁面
     $('login-btn').addEventListener('click', handleLogin);
     $('reset-admin-btn').addEventListener('click', resetAdmin);
-    // 密碼框綁定 Enter 鍵
     $('password').addEventListener('keypress', function (e) {
         if (e.key === 'Enter') handleLogin();
     });
@@ -698,7 +676,6 @@ function initPOS() {
     });
     $('checkout-btn').addEventListener('click', handleCheckout);
     $('clear-cart-btn').addEventListener('click', clearCart);
-    // 實收金額輸入時計算找零
     cashReceivedInput.addEventListener('input', calculateChange);
 
     // 計算機
@@ -730,5 +707,5 @@ function initPOS() {
     }
 }
 
-// 啟動 POS 系統
+// 確保 DOM 載入完成後才執行初始化
 document.addEventListener('DOMContentLoaded', initPOS);
