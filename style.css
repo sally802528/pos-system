@@ -1,4 +1,4 @@
-/* --- 基礎設定與頁面切換 --- */
+/* --- 基礎設定與通用樣式 --- */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -6,20 +6,52 @@ body {
     background-color: #f4f4f4;
 }
 
-/* 確保所有頁面都佔滿螢幕，但只有一個顯示 */
+/* 按鈕通用樣式 */
+.primary-btn, .secondary-btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.primary-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.secondary-btn {
+    background-color: #6c757d;
+    color: white;
+}
+
+.small-btn {
+    padding: 5px 10px;
+    font-weight: normal;
+}
+
+.error-msg {
+    color: #dc3545;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* --- 頁面切換控制 (解決跑圖問題的關鍵) --- */
 .page {
     display: none;
     min-height: 100vh;
     width: 100%;
     position: relative; 
     box-sizing: border-box;
-    padding-top: 60px; /* 為固定標頭留出空間 */
+    /* 留出固定標頭的空間 */
+    padding-top: 60px; 
 }
 
 .page.active {
-    display: block; /* 只有活躍頁面顯示 */
+    display: block; 
 }
 
+/* 固定標頭 */
 header {
     background-color: #333;
     color: white;
@@ -27,33 +59,32 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: fixed; /* 固定在頂部 */
+    position: fixed; 
     top: 0;
     width: 100%;
-    z-index: 10; /* 確保在頁面內容上方 */
+    z-index: 10; 
 }
 
 .header-actions button {
     margin-left: 10px;
 }
 
-/* --- 登入頁面樣式 (確保居中和全覆蓋) --- */
+/* --- 登入頁面樣式 --- */
 #login-page {
-    /* 修正：讓登入頁面全覆蓋且居中 */
+    /* 登入頁面必須覆蓋所有內容 */
     position: fixed;
     top: 0;
     left: 0;
-    display: flex; /* 必須設為 active 時才顯示 flex */
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    width: 100%;
+    height: 100%;
     background-color: #007bff;
     color: white;
     padding-top: 0; 
     z-index: 100;
-}
-#login-page.active {
-    display: flex; /* 確保只有 active 時才用 flex 居中 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .login-form {
@@ -75,27 +106,22 @@ header {
 }
 
 #login-btn {
-    width: 100%;
-    padding: 10px;
     background-color: #28a745;
     color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1.1em;
+    width: 100%;
+    margin-bottom: 10px;
 }
 
-/* --- POS 主介面樣式 (雙欄佈局) --- */
+
+/* --- POS 主介面佈局 --- */
 .pos-container {
     display: flex;
     padding: 20px;
-    gap: 20px; /* 區塊間距 */
-    /* 確保內容從 header 下方開始 */
-    padding-top: 20px; 
+    gap: 20px; 
 }
 
 .product-selection {
-    flex: 2; /* 佔據左側 2/3 空間 */
+    flex: 2; 
     background-color: white;
     padding: 20px;
     border-radius: 8px;
@@ -103,14 +129,33 @@ header {
 }
 
 .order-cart {
-    flex: 1; /* 佔據右側 1/3 空間 */
+    flex: 1; 
     background-color: #e9e9e9;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-/* 商品網格 */
+/* 商品區樣式 */
+.category-filter {
+    margin-bottom: 15px;
+}
+
+.filter-btn {
+    padding: 8px 15px;
+    margin-right: 5px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+.filter-btn.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
 .products-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -123,7 +168,68 @@ header {
     border-radius: 6px;
     text-align: center;
     cursor: pointer;
+    transition: background-color 0.2s;
     background-color: #fff;
+}
+
+/* 購物車區樣式 */
+.cart-items-list {
+    min-height: 150px;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-top: 1px dashed #ccc;
+}
+
+.qty-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 3px 8px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.qty-btn.remove {
+    background: #dc3545;
+}
+
+.order-summary h3, .order-summary p {
+    margin: 5px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.order-summary h3 span {
+    font-size: 1.5em;
+    color: #dc3545;
+}
+
+#cash-received {
+    width: 100px;
+    text-align: right;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.checkout-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.checkout-actions .primary-btn, .checkout-actions .secondary-btn {
+    flex: 1;
 }
 
 /* --- 計算機樣式 --- */
@@ -151,33 +257,25 @@ header {
     gap: 5px;
 }
 
-/* --- 購物車與總結 --- */
-.cart-items-list {
-    min-height: 150px;
-    max-height: 300px;
-    overflow-y: auto;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #ccc;
+.calc-btn {
+    padding: 15px 0;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
-.order-summary h3, .order-summary p {
-    margin: 5px 0;
-    display: flex;
-    justify-content: space-between;
-}
-.checkout-actions {
-    margin-top: 20px;
-    display: flex;
-    gap: 10px;
-}
+
+.calc-btn.num { background-color: #f0f0f0; }
+.calc-btn.op { background-color: #ff9800; color: white; }
+.calc-btn.equal { background-color: #4CAF50; color: white; }
 
 /* --- 管理頁面樣式 --- */
 .management-container {
     display: flex;
     padding: 20px;
     gap: 20px;
-    padding-top: 20px; 
 }
+
 .add-product-form, .product-list-management {
     flex: 1;
     background-color: white;
@@ -185,4 +283,56 @@ header {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
-/* ... 保持其他樣式不變 ... */
+
+.add-product-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.manage-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px dashed #ccc;
+}
+
+.import-export-btns {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+/* --- 模態視窗樣式 --- */
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+}
+
+#receipt-content {
+    font-family: monospace;
+    white-space: pre-wrap;
+    border: 1px dashed #333;
+    padding: 10px;
+    margin-bottom: 15px;
+}
