@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub POS - 銷售系統</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>簡易 POS 銷售系統</h1>
+        <div id="login-status">未登入</div>
+    </header>
+
+    <main class="pos-container">
+
+        <section class="product-selection">
+            <h2>商品選單</h2>
+            <div class="category-filter">
+                <button class="filter-btn active" data-category="all">全部</button>
+                </div>
+            <div id="products-list" class="products-grid">
+                </div>
+        </section>
+
+        <section class="order-cart">
+            <h2>當前訂單</h2>
+            <div id="cart-items">
+                <p>購物車是空的。</p>
+            </div>
+            
+            <div class="order-summary">
+                <p>小計 (Subtotal)：<span id="subtotal">$0.00</span></p>
+                <p>折扣 (Discount)：<span id="discount-amount">$0.00</span></p>
+                <h3>總計 (Total)：<span id="total">$0.00</span></h3>
+            </div>
+
+            <div class="checkout-actions">
+                <button id="checkout-btn" class="primary-btn">結帳 (Checkout)</button>
+                <button id="clear-cart-btn" class="secondary-btn">清空</button>
+            </div>
+        </section>
+
+    </main>
+    
+    <div id="receipt-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h3>交易收據</h3>
+            <div id="receipt-content"></div>
+            <button id="print-receipt-btn">列印收據</button>
+            <button id="export-pdf-btn">導出 PDF</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
