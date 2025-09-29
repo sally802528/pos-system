@@ -9,15 +9,15 @@
 <body>
 
     <div id="login-page" class="page active">
-        <h2>POS 系統登入</h2>
         <div class="login-form">
+            <h2>POS 系統登入</h2>
             <p>提示：預設使用者名為 **admin**，密碼為 **123456**</p>
-            <input type="text" id="username" placeholder="使用者名">
-            <input type="password" id="password" placeholder="密碼">
+            <input type="text" id="username" placeholder="使用者名" value="admin">
+            <input type="password" id="password" placeholder="密碼" value="123456">
             <button id="login-btn">登入</button>
             <p id="login-message" class="error-msg"></p>
+            <button id="reset-admin-btn" class="secondary-btn small-btn">重置預設帳號</button>
         </div>
-        <button id="reset-admin-btn" class="secondary-btn small-btn">重置預設帳號</button>
     </div>
 
     <div id="pos-page" class="page">
@@ -34,13 +34,16 @@
                 <h2>商品選單</h2>
                 <div class="category-filter">
                     <button class="filter-btn active" data-category="all">全部</button>
-                </div>
-                <div id="products-list" class="products-grid"></div>
+                    </div>
+                <div id="products-list" class="products-grid">
+                    </div>
             </section>
 
             <section class="order-cart">
                 <h2>當前訂單</h2>
-                <div id="cart-items" class="cart-items-list"></div>
+                <div id="cart-items" class="cart-items-list">
+                    <p style="text-align: center;">購物車是空的。</p>
+                </div>
                 
                 <div class="calculator">
                     <input type="text" id="calc-display" value="0" readonly>
@@ -70,7 +73,7 @@
 
                 <div class="order-summary">
                     <p>應收金額：<span id="receivable">$0.00</span></p>
-                    <p>實收金額：<input type="number" id="cash-received" value="0" min="0" step="1"></p>
+                    <p>實收金額：<input type="number" id="cash-received" value="0" min="0" step="0.01"></p>
                     <h3>找零金額：<span id="change-due">$0.00</span></h3>
                 </div>
 
@@ -97,6 +100,7 @@
                 <input type="text" id="manage-category" placeholder="分類 (例如: 飲品、點心)" required>
                 <input type="number" id="manage-stock" placeholder="庫存數量" min="0">
                 <button id="save-product-btn" class="primary-btn">新增商品</button>
+                <button class="secondary-btn" onclick="resetProductForm()">清空表單</button>
             </section>
 
             <section class="product-list-management">
