@@ -1,0 +1,209 @@
+/* 基本重置 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+h1 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+#login-status {
+    font-size: 0.9em;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #555;
+}
+
+/* POS 主要佈局 */
+.pos-container {
+    display: flex;
+    padding: 20px;
+    gap: 20px; /* 區塊間距 */
+}
+
+.product-selection {
+    flex: 2; /* 佔據較大空間 */
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.order-cart {
+    flex: 1; /* 佔據較小空間 */
+    background-color: #e9e9e9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* 商品區樣式 */
+.category-filter {
+    margin-bottom: 15px;
+}
+
+.filter-btn {
+    padding: 8px 15px;
+    margin-right: 5px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+.filter-btn.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 自適應網格 */
+    gap: 15px;
+}
+
+.product-card {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    background-color: #fff;
+}
+
+.product-card:hover {
+    background-color: #e0f7fa;
+    border-color: #00bcd4;
+}
+
+.product-card h4 {
+    margin: 5px 0;
+    font-size: 1em;
+}
+
+.product-card p {
+    margin: 0;
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+/* 購物車區樣式 */
+#cart-items {
+    min-height: 200px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-top: 1px dashed #ccc;
+}
+
+.item-info {
+    flex-grow: 1;
+}
+
+.item-qty-control {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.qty-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 3px 8px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.qty-btn.remove {
+    background: #dc3545;
+}
+
+.order-summary h3, .order-summary p {
+    margin: 5px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.order-summary h3 span {
+    font-size: 1.5em;
+    color: #dc3545;
+}
+
+.checkout-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.primary-btn, .secondary-btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    flex: 1;
+}
+
+.primary-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.secondary-btn {
+    background-color: #6c757d;
+    color: white;
+}
+
+/* 模態視窗樣式 (簡化) */
+.modal {
+    display: none; /* 預設隱藏 */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 8px;
+    position: relative;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
